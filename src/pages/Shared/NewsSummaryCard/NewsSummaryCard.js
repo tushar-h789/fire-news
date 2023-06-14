@@ -32,9 +32,9 @@ const NewsSummaryCard = ({news}) => {
       <Card.Img variant="top" src={image_url} />
       <Card.Text>
         {
-            details.length > 250 
+            details?.length > 250 
             ?
-            <p>{details.slice(0, 250) + '...'} <Link to={`/news/${_id}`}>Read More</Link></p>
+            <p>{details?.slice(0, 250) + '...'} <Link to={`/news/${_id}`}>Read More</Link></p>
             :
             <p>{details}</p>
         }
@@ -43,7 +43,7 @@ const NewsSummaryCard = ({news}) => {
     <Card.Footer className='d-flex justify-content-between'>
         <div className='d-flex align-items-center'>
             <FaRegStar className='me-2 text-warning'/>
-            <span>{rating.number}</span>
+            <span>{rating?.number}</span>
         </div>
         <div className='d-flex align-items-center'>
             <FaRegEye className='me-2'/>
