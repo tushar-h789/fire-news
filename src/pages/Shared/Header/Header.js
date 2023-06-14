@@ -1,28 +1,32 @@
-import React, { useContext } from 'react'
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import { Link } from 'react-router-dom';
-import { AuthContext } from '../../../context/AuthProvider/AuthProvider';
-import { Image } from 'react-bootstrap';
-import { FaUser } from 'react-icons/fa';
-import Button from 'react-bootstrap/Button';
+import React, { useContext } from "react";
+import Container from "react-bootstrap/Container";
+import Nav from "react-bootstrap/Nav";
+import Navbar from "react-bootstrap/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
+import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../../context/AuthProvider/AuthProvider";
+import { Image } from "react-bootstrap";
+import { FaUser } from "react-icons/fa";
+import Button from "react-bootstrap/Button";
 
 const Header = () => {
+  const navigate = useNavigate();
+  const { user, logOut } = useContext(AuthContext);
 
-  const {user, logOut} = useContext(AuthContext)
-
-  const handleLogOut =()=>{
+  const handleLogOut = () => {
     logOut()
-    .then(()=>{})
-    .catch(error => console.error(error))
-  }
+      .then(() => {
+        navigate("/login");
+      })
+      .catch((error) => console.error(error));
+  };
 
   return (
     <Navbar collapseOnSelect expand="lg" bg="light" variant="light">
       <Container>
-        <Navbar.Brand><Link to='/'>Fire News</Link></Navbar.Brand>
+        <Navbar.Brand>
+          <Link to="/">Fire News</Link>
+        </Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="me-auto">
@@ -41,37 +45,41 @@ const Header = () => {
             </NavDropdown>
           </Nav>
           <Nav>
-            <Nav.Link href="#deets">
-              
-              {user?.uid
-              ?
-              <>
-                {user?.displayName}
-                <Button onClick={handleLogOut} variant="secondary">LogOut</Button>
-
-              </>
-              :
-              <>
-                <Link to='/login'><Button variant="light">Login</Button></Link>
-                <Link to="/register"><Button variant="light">Register</Button></Link>
-                
-              </>
-              }
-              
-              </Nav.Link>
-            <Nav.Link eventKey={2} href="#memes">
-              {
-                user?.photoURL ?
-                <Image style={{height: '30px'}} roundedCircle src={user?.photoURL}></Image>
-                : <FaUser></FaUser>
-              }
-              {/* <FaUser></FaUser> */}
-            </Nav.Link>
+            <>
+              {user?.uid ? (
+                <>
+                  {user?.displayName}
+                  <Button onClick={handleLogOut} variant="secondary">
+                    LogOut
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Link to="/login">
+                    <Button variant="light">Login</Button>
+                  </Link>
+                  <Link to="/register">
+                    <Button variant="light">Register</Button>
+                  </Link>
+                </>
+              )}
+            </>
+            <Link to='/profile'>
+              {user?.photoURL ? (
+                <Image
+                  style={{ height: "40px", width: "40px" }}
+                  roundedCircle
+                  src={user?.photoURL}
+                ></Image>
+              ) : (
+                <FaUser></FaUser>
+              )}
+            </Link>
           </Nav>
         </Navbar.Collapse>
       </Container>
     </Navbar>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
